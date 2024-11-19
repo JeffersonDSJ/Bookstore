@@ -7,6 +7,7 @@ namespace BookStore.Models
         public int Id { get; set; }
 
 		[Display(Name = "Nome")]
+        [Required(ErrorMesssage = "O campo {0} é obrigatorio")]
 		public string Name { get; set; }
 
         //public ICollection<Book> Books { get; set; } = new List<Book>();
