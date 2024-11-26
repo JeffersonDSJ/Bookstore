@@ -23,4 +23,17 @@ namespace BookStore.Services
             _context.SaveChanges();
         }
     }
+
+	
+	public async Task<List<Genre>> FindAllAsync()
+	{
+		return await _context.Genres.ToListAsync();
+	}
+
+	// POST: Genres/Create
+	public async Task InsertAsync(Genre genre)
+	{
+		_context.Add(genre);
+		await _context.SaveChangesAsync();
+	}
 }

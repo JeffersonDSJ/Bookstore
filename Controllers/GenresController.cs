@@ -138,6 +138,8 @@ namespace BookStore.Controllers
 
 	}
 
+
+
 	[HttpPost]
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> Edit(int id, Genre genre)
@@ -161,6 +163,16 @@ namespace BookStore.Controllers
 		{
 			return RedirectToAction(nameof(Error), new { message = ex.Message });
 		}
+	}
+
+	public IActionResult Error(string message)
+	{
+		var viewModel = new ErrorViewModel
+		{
+			Message = message,
+			RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+		};
+		return View(viewModel);
 	}
 
 }
