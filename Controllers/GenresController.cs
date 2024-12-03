@@ -2,19 +2,17 @@
 
 using BookStore.Services;
 
-using BookStore.Data;
-
 using Microsoft.AspNetCore.Mvc;
 
-using BookStore.Models.ViewModels;
-
 using System.Diagnostics;
+
+using Bookstore.Models.ViewModels;
 
 namespace BookStore.Controllers
 
 {
 
-	public class GenresController : Controller
+    public class GenresController : Controller
 
 	{
 
@@ -136,44 +134,30 @@ namespace BookStore.Controllers
 
 		}
 
-	}
-
-
-
 	[HttpPost]
-	[ValidateAntiForgeryToken]
-	public async Task<IActionResult> Edit(int id, Genre genre)
-	{
-		if (!ModelState.IsValid)
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, Genre genre)
 		{
-			return View();
+			if (!ModelState.IsValid)
+			{
+				return View();
+			}
+
+			if (id != genre.Id)
+			{
+				return RedirectToAction(nameof(Error), new { message = "Id's não condizentes" });
+			}
+
+			try
+			{
+				await _service.UpdateAsync(genre);
+				return RedirectToAction(nameof(Index));
+			}
+			catch (ApplicationException ex)
+			{
+				return RedirectToAction(nameof(Error), new { message = ex.Message });
+			}
 		}
 
-		if (id != genre.Id)
-		{
-			return RedirectToAction(nameof(Error), new { message = "Id's não condizentes" });
-		}
-
-		try
-		{
-			await _service.UpdateAsync(genre);
-			return RedirectToAction(nameof(Index));
-		}
-		catch (ApplicationException ex)
-		{
-			return RedirectToAction(nameof(Error), new { message = ex.Message });
-		}
-	}
-
-	public IActionResult Error(string message)
-	{
-		var viewModel = new ErrorViewModel
-		{
-			Message = message,
-			RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-		};
-		return View(viewModel);
-	}
-
-}
+	} }
 

@@ -10,5 +10,8 @@ namespace BookStore.Data
         }
 
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Sale> Sales { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
     }
 }
